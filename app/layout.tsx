@@ -1,0 +1,41 @@
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import Background from '@/components/background';
+import { ThemeProvider } from '@/components/theme-provider';
+import VoidAnimatedCursor from '@/components/void-animated-cursor';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+
+const inter = Inter({ subsets: ['latin'] });
+
+// TODO:SEO stuffs, og image
+export const metadata: Metadata = {
+  title: 'MyaPoll🐼',
+  description: 'MyaPoll🐼',
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang='en' suppressHydrationWarning>
+      <body className={cn('overflow-x-hidden', inter.className)}>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='dark'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Background />
+          <VoidAnimatedCursor />
+          <Toaster />
+          <TooltipProvider>{children}</TooltipProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
