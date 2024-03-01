@@ -28,7 +28,7 @@ const PollApp = () => {
   );
 
   return (
-    <div className='flex min-h-[calc(100dvh-10rem)] flex-col items-center justify-center'>
+    <div className='z-40 flex min-h-[calc(100dvh-10rem)] flex-col items-center justify-center'>
       {!isAuth ? (
         <AuthForm onSubmit={handleAuth} />
       ) : (

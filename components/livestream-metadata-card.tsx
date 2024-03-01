@@ -17,10 +17,10 @@ const LiveStreamMetadataCard = ({
         <Image
           src={liveStreamMetaData.thumbnail}
           alt='metadata-yt-thumbnail'
-          width={100}
-          height={100}
+          width={320}
+          height={180}
         />
-        <Label>
+        <Label className='px-10'>
           {liveStreamMetaData.title ?? 'Live stream title not found.'}
         </Label>
       </CardContent>

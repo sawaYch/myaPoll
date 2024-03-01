@@ -57,7 +57,7 @@ export const useLiveChat = (currentPassphrase?: string) => {
           const activeLiveChatId =
             data.items[0].liveStreamingDetails?.activeLiveChatId;
           const title = data.items[0].snippet?.title;
-          const thumbnail = data.items[0].snippet?.thumbnails?.default?.url;
+          const thumbnail = data.items[0].snippet?.thumbnails?.medium?.url;
           const channelId = data.items[0].snippet?.channelId;
           if (activeLiveChatId == null) {
             return {

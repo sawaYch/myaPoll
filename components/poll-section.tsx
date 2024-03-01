@@ -465,7 +465,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                 {pollStatus === 'stop' && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button className='mt-8 flex w-32 self-end bg-gray-400'>
+                      <Button className='mt-8 flex w-32 self-end bg-gray-600'>
                         Next Poll
                         <ArrowBigRightDashIcon className='ml-1 w-8' />
                       </Button>
