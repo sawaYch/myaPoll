@@ -80,6 +80,8 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
 
   const [pollData, setPollData] = useState<PollUserData>({});
   const [pollStartDate, setPollStartDate] = useState<dayjs.Dayjs>();
+  const [pollSummary, setPollSummary] = useState<number[]>([]);
+  const [pollSummaryTop, setPollSummaryTop] = useState<number>(0);
 
   const { fetchLiveChatMessage, fetchLiveStreamingDetails, extractMessage } =
     useLiveChat(currentPassphrase);
@@ -233,6 +235,10 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
         };
       });
 
+    const pollSummary = arrayOfObj.map((it) => it.data);
+    const topIndex = pollSummary.indexOf(Math.max(...pollSummary));
+    setPollSummary(pollSummary);
+    setPollSummaryTop(topIndex);
     const sortedArrayOfObj = arrayOfObj.sort((a, b) =>
       a.data === b.data ? 0 : a.data > b.data ? -1 : 1
     );
@@ -391,6 +397,23 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   data={chartInitData}
                   redraw
                 />
+
+                {pollStatus === 'stop' && (
+                  <div className='mt-8'>
+                    <CardTitle>📑 Poll Summary</CardTitle>
+                    <div className='flex flex-col p-8'>
+                      {pollSummary.map((value, index) => {
+                        return (
+                          <div key={index + 1}>
+                            {index + 1}: {value ?? 0}{' '}
+                            {pollSummaryTop === index && '👑'}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {pollStatus === 'start' && (
                   <Button
                     className='mt-8 flex w-32 self-end'
@@ -428,6 +451,8 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                             setPollStatus('prepare');
                             setPollData({});
                             setNumOfOptions(0);
+                            setPollSummary([]);
+                            setPollSummaryTop(0);
                             if (inputRef.current) {
                               inputRef.current.value = '';
                             }

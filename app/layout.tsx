@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Background from '@/components/background';
 import { ThemeProvider } from '@/components/theme-provider';
-import VoidAnimatedCursor from '@/components/void-animated-cursor';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -31,7 +30,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Background />
-          <VoidAnimatedCursor />
           <Toaster />
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
