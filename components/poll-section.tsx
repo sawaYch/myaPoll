@@ -318,6 +318,37 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
           display: false,
         },
       },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'Option🎫',
+            color: '#dddddd',
+          },
+          ticks: {
+            color: '#dddddd',
+          },
+          grid: {
+            color: '#81112a',
+            lineWidth: 0.5,
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            color: '#dddddd',
+            text: 'Count',
+          },
+          ticks: {
+            color: '#dddddd',
+            stepSize: 1,
+          },
+          grid: {
+            color: '#cd1b42',
+            lineWidth: 1,
+          },
+        },
+      },
     };
   }, []);
 
@@ -339,7 +370,9 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
             )}
             <Card className='w-full'>
               <CardHeader>
-                <CardTitle>1️⃣ Prepare</CardTitle>
+                <CardTitle className='font-extrabold uppercase text-primary'>
+                  1️⃣ Prepare
+                </CardTitle>
               </CardHeader>
               <CardContent className='flex flex-col gap-2'>
                 <Label>Number of options (max: 100)</Label>
@@ -419,11 +452,15 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
             <Card>
               <CardHeader>
                 {pollStatus === 'start' && (
-                  <CardTitle className='flex'>
+                  <CardTitle className='flex font-extrabold uppercase text-primary'>
                     2️⃣ Retrieving response <Spinner className='ml-2' />
                   </CardTitle>
                 )}
-                {pollStatus === 'stop' && <CardTitle>3️⃣ Result</CardTitle>}
+                {pollStatus === 'stop' && (
+                  <CardTitle className='font-extrabold uppercase text-primary'>
+                    3️⃣ Result
+                  </CardTitle>
+                )}
               </CardHeader>
               <CardContent className='flex flex-col gap-2'>
                 <Bar
@@ -432,11 +469,12 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   data={chartInitData}
                   redraw
                 />
-
                 {pollStatus === 'stop' && (
                   <div className='mt-8'>
-                    <CardTitle>📑 Poll Summary</CardTitle>
-                    <div className='flex flex-col p-8'>
+                    <CardTitle className='font-extrabold uppercase text-primary'>
+                      📊 Poll Summary
+                    </CardTitle>
+                    <div className='mt-8 flex flex-col rounded-md border-2 border-secondary p-8'>
                       {pollSummary.map((value, index) => {
                         return (
                           <div key={index + 1}>
