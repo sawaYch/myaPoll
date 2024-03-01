@@ -77,6 +77,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
 
   const handleTerminateProcess = useCallback(async () => {
     setIsReady(false);
+    setPollStatus('prepare');
   }, []);
 
   const [pollData, setPollData] = useState<PollUserData>({});
