@@ -35,6 +35,7 @@ import LiveStreamMetadataCard from './livestream-metadata-card';
 import Spinner from './spinner';
 import { defaultBaseInterval, isNumeric } from '@/lib/utils';
 import dayjs from 'dayjs';
+import { Checkbox } from './ui/checkbox';
 
 interface UrlInputSectionProps {
   currentPassphrase: string;
@@ -82,6 +83,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
   const [pollStartDate, setPollStartDate] = useState<dayjs.Dayjs>();
   const [pollSummary, setPollSummary] = useState<number[]>([]);
   const [pollSummaryTop, setPollSummaryTop] = useState<number>(0);
+  const [allowUpdatePollOptions, setAllowUpdatePollOptions] = useState(true);
 
   const { fetchLiveChatMessage, fetchLiveStreamingDetails, extractMessage } =
     useLiveChat(currentPassphrase);
@@ -166,7 +168,16 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
           // within valid range?
           const value = +it.message;
           if (value > 0 && value <= numOfOptions) {
-            existedPollData[it.uid] = value;
+            if (allowUpdatePollOptions) {
+              existedPollData[it.uid] = value;
+            } else {
+              if (
+                existedPollData[it.uid] == null ||
+                existedPollData[it.uid] == 0
+              ) {
+                existedPollData[it.uid] = value;
+              }
+            }
           }
         }
       });
@@ -189,6 +200,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
       }, pollingMs);
     },
     [
+      allowUpdatePollOptions,
       extractMessage,
       fetchLiveChatMessage,
       numOfOptions,
@@ -357,6 +369,29 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   }}
                   disabled={pollStatus !== 'prepare'}
                 />
+                <div className='mt-4 flex flex-row items-center gap-2'>
+                  <Checkbox
+                    disabled={pollStatus != 'prepare'}
+                    id='checkbox-allow-change-options'
+                    checked={allowUpdatePollOptions}
+                    onCheckedChange={(checked) =>
+                      setAllowUpdatePollOptions(
+                        checked === 'indeterminate' ? true : checked
+                      )
+                    }
+                  />
+                  <Label htmlFor='checkbox-allow-change-options'>
+                    Allow audience to update his choice using latest comments
+                  </Label>
+                </div>
+                <pre className='pl-6 text-sm text-muted-foreground'>
+                  {'For example:\n'}
+                  {'userA: 2\n'}
+                  {'userB: 1\n'}
+                  {'userA: 3\n'}
+                  {'...\n'}
+                  {'userA is updated his choice from "2" to "3".\n'}
+                </pre>
                 <Button
                   className='mt-8 flex w-32 self-end'
                   disabled={pollStatus !== 'prepare'}
