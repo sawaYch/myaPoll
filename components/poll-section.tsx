@@ -323,14 +323,30 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
               <CardHeader>
                 <CardTitle>1️⃣ Prepare</CardTitle>
               </CardHeader>
-
               <CardContent className='flex flex-col gap-2'>
-                <Label>Number of options</Label>
+                <Label>Number of options (max: 100)</Label>
                 <Input
                   ref={inputRef}
                   type='number'
+                  min={1}
+                  max={100}
+                  step={1}
                   required
+                  onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    return false;
+                  }}
                   onChange={(event) => {
+                    // cap max options = 100
+                    if (Math.abs(+event.target.value) >= 101) {
+                      setNumOfOptions(0);
+                      return;
+                    }
                     setNumOfOptions(Math.abs(+event.target.value));
                   }}
                   disabled={pollStatus !== 'prepare'}
@@ -340,7 +356,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   disabled={pollStatus !== 'prepare'}
                   onClick={() => {
                     // simple validation
-                    if (numOfOptions === 0) {
+                    if (numOfOptions <= 0) {
                       toast({
                         title: '🚨 Oops...',
                         description:
@@ -366,7 +382,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                     2️⃣ Retrieving response <Spinner className='ml-2' />
                   </CardTitle>
                 )}
-                {pollStatus === 'stop' && <CardTitle>3️⃣ End</CardTitle>}
+                {pollStatus === 'stop' && <CardTitle>3️⃣ Result</CardTitle>}
               </CardHeader>
               <CardContent className='flex flex-col gap-2'>
                 <Bar
