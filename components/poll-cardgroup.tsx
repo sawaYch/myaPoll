@@ -1,25 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import UrlInput from './url-input';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { vidParser } from '@/lib/vid-parser';
 import { LiveMetadata, MessageData, PollUserData } from '@/types/liveChat';
 import { useLiveChat } from '@/hooks/use-livechat';
-import { useToast } from './ui/use-toast';
-import { Label } from './ui/label';
+import { useToast } from '@/components/ui/use-toast';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { ArrowBigRightDashIcon, PlayIcon, StopCircleIcon } from 'lucide-react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { PlayIcon, StopCircleIcon } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -30,14 +18,17 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { randomRGBAColor } from '@/lib/random-rgba-color';
-import LiveStreamMetadataCard from './livestream-metadata-card';
-import Spinner from './spinner';
+import LiveStreamMetadataCard from '@/components/livestream-metadata-card';
+import Spinner from '@/components/spinner';
 import { defaultBaseInterval, isNumeric } from '@/lib/utils';
 import dayjs from 'dayjs';
-import { Checkbox } from './ui/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useChartConfig } from '@/hooks/use-chart-config';
+import NewPollConfirmDialog from '@/components/new-poll-confirm-dialog';
+import PollSummarySubCard from '@/components/poll-summary-subcard';
+import UrlInput from '@/components/url-input';
 
-interface UrlInputSectionProps {
+interface PollCardGroupProps {
   currentPassphrase: string;
 }
 
@@ -52,7 +43,7 @@ ChartJS.register(
   Legend
 );
 
-const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
+const PollCardGroup = ({ currentPassphrase }: PollCardGroupProps) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -83,7 +74,6 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
   const [pollData, setPollData] = useState<PollUserData>({});
   const [pollStartDate, setPollStartDate] = useState<dayjs.Dayjs>();
   const [pollSummary, setPollSummary] = useState<number[]>([]);
-  const [pollSummaryTop, setPollSummaryTop] = useState<number>(0);
   const [allowUpdatePollOptions, setAllowUpdatePollOptions] = useState(true);
 
   const { fetchLiveChatMessage, fetchLiveStreamingDetails, extractMessage } =
@@ -230,7 +220,6 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
   const sortChartResult = useCallback(() => {
     const data = new Array(numOfOptions).fill(0);
 
-    // MOCKData: {'Sawa': 5, 'userA': 5, 'Sam': 1, 'userB': 5, 'userC': 2}
     Object.values(pollData).forEach((v) => {
       if (v > 0 && v <= numOfOptions) {
         data[v - 1]++;
@@ -249,9 +238,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
       });
 
     const pollSummary = arrayOfObj.map((it) => it.data);
-    const topIndex = pollSummary.indexOf(Math.max(...pollSummary));
     setPollSummary(pollSummary);
-    setPollSummaryTop(topIndex);
     const sortedArrayOfObj = arrayOfObj.sort((a, b) =>
       a.data === b.data ? 0 : a.data > b.data ? -1 : 1
     );
@@ -268,7 +255,7 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
         newArrayLabel.push(`${d.label}`);
       }
       newArrayData.push(d.data);
-      newBarColor.push(d.backgroundColor); // seems buggy here
+      newBarColor.push(d.backgroundColor);
       newBorderColor.push(d.borderColor);
     });
 
@@ -281,76 +268,22 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
     }
   }, [barColor?.bar, barColor?.border, numOfOptions, pollData]);
 
-  const chartInitData = useMemo(() => {
-    const labels = Array.from(Array(numOfOptions).keys()).map(
-      (i) => `${i + 1}`
-    );
-    const color = randomRGBAColor(numOfOptions);
-    setBarColor(color);
+  const { chartOptions, chartInitData, chartColor } =
+    useChartConfig(numOfOptions);
 
-    return {
-      labels,
-      datasets: [
-        {
-          label: 'Poll',
-          data: [],
-          backgroundColor: color.bar,
-          borderColor: color.border,
-          maxBarThickness: 24,
-        },
-      ],
-    };
-  }, [numOfOptions]);
+  useEffect(() => {
+    // memories chartColor scheme
+    setBarColor(chartColor);
+  }, [chartColor]);
 
-  const chartOptions = useMemo(() => {
-    return {
-      indexAxis: 'y' as const,
-      elements: {
-        bar: {
-          borderWidth: 2,
-        },
-      },
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false,
-        },
-        title: {
-          display: false,
-        },
-      },
-      scales: {
-        y: {
-          title: {
-            display: true,
-            text: 'Option🎫',
-            color: '#dddddd',
-          },
-          ticks: {
-            color: '#dddddd',
-          },
-          grid: {
-            color: '#81112a',
-            lineWidth: 0.5,
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            color: '#dddddd',
-            text: 'Count',
-          },
-          ticks: {
-            color: '#dddddd',
-            stepSize: 1,
-          },
-          grid: {
-            color: '#cd1b42',
-            lineWidth: 1,
-          },
-        },
-      },
-    };
+  const handleProceedNewPoll = useCallback(() => {
+    setPollStatus('prepare');
+    setPollData({});
+    setNumOfOptions(0);
+    setPollSummary([]);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   }, []);
 
   return (
@@ -471,23 +404,8 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   redraw
                 />
                 {pollStatus === 'stop' && (
-                  <div className='mt-8'>
-                    <CardTitle className='font-extrabold uppercase text-primary'>
-                      📊 Poll Summary
-                    </CardTitle>
-                    <div className='mt-8 flex flex-col rounded-md border-2 border-secondary p-8'>
-                      {pollSummary.map((value, index) => {
-                        return (
-                          <div key={index + 1}>
-                            {index + 1}: {value ?? 0}{' '}
-                            {pollSummaryTop === index && '👑'}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <PollSummarySubCard pollSummary={pollSummary} />
                 )}
-
                 {pollStatus === 'start' && (
                   <Button
                     className='mt-8 flex w-32 self-end'
@@ -502,41 +420,9 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
                   </Button>
                 )}
                 {pollStatus === 'stop' && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button className='mt-8 flex w-32 self-end bg-gray-600'>
-                        Next Poll
-                        <ArrowBigRightDashIcon className='ml-1 w-8' />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Confirmation</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Creating next new poll will discard current poll
-                          records. This webapp will not keep the poll records
-                          and this action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => {
-                            setPollStatus('prepare');
-                            setPollData({});
-                            setNumOfOptions(0);
-                            setPollSummary([]);
-                            setPollSummaryTop(0);
-                            if (inputRef.current) {
-                              inputRef.current.value = '';
-                            }
-                          }}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <NewPollConfirmDialog
+                    handleProceedNewPoll={handleProceedNewPoll}
+                  />
                 )}
               </CardContent>
             </Card>
@@ -547,4 +433,4 @@ const PollSection = ({ currentPassphrase }: UrlInputSectionProps) => {
   );
 };
 
-export default PollSection;
+export default PollCardGroup;

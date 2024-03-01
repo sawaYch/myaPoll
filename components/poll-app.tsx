@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 
 import { AuthForm } from './auth-form';
-import PollSection from './poll-section';
+import PollCardGroup from './poll-cardgroup';
 
 const PollApp = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -32,7 +32,7 @@ const PollApp = () => {
       {!isAuth ? (
         <AuthForm onSubmit={handleAuth} />
       ) : (
-        <PollSection currentPassphrase={currentPassphrase} />
+        <PollCardGroup currentPassphrase={currentPassphrase} />
       )}
     </div>
   );
