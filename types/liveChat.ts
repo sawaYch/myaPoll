@@ -25,3 +25,5 @@ export interface MessageData {
 }
 
 export type PollUserData = Record<string, number>;
+
+export type PollStatusType = 'prepare' | 'start' | 'stop';

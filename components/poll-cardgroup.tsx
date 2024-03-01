@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { vidParser } from '@/lib/vid-parser';
-import { LiveMetadata, MessageData, PollUserData } from '@/types/liveChat';
+import { LiveMetadata, MessageData, PollStatusType, PollUserData } from '@/types/liveChat';
 import { useLiveChat } from '@/hooks/use-livechat';
 import { useToast } from '@/components/ui/use-toast';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlayIcon, StopCircleIcon } from 'lucide-react';
@@ -32,7 +32,6 @@ interface PollCardGroupProps {
   currentPassphrase: string;
 }
 
-type PollStatusType = 'prepare' | 'start' | 'stop';
 
 ChartJS.register(
   CategoryScale,
