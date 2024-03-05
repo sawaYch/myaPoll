@@ -1,15 +1,14 @@
+'use client';
 import { type PropsWithChildren, useRef } from 'react';
-import type { StoreInterface, StoreType } from './store';
-import { initializeStore, StoreContextProvider } from './store';
+import { initStore, StoreContextProvider } from './store';
+import { StoreApi } from 'zustand';
+import { PollAppFullInterface } from '@/types/poll-app';
 
-export default function StoreProvider({
-  children,
-  ...props
-}: PropsWithChildren) {
-  const storeRef = useRef<StoreType>();
+export default function StoreProvider({ children }: PropsWithChildren) {
+  const storeRef = useRef<StoreApi<PollAppFullInterface>>();
 
   if (!storeRef.current) {
-    storeRef.current = initializeStore(props);
+    storeRef.current = initStore();
   }
 
   return (

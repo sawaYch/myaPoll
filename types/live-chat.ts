@@ -23,7 +23,3 @@ export interface MessageData {
   isChatSponsor: boolean; // channel membership
   isChatModerator: boolean; // channel mod
 }
-
-export type PollUserData = Record<string, number>;
-
-export type PollStatusType = 'prepare' | 'start' | 'stop';
