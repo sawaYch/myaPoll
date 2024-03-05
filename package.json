@@ -32,7 +32,8 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@types/node": "^20",

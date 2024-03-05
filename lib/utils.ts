@@ -1,4 +1,3 @@
-import { PollUserData } from '@/types/liveChat';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
