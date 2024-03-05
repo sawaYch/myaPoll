@@ -8,7 +8,7 @@ import { usePollAppStore } from '@/stores/store';
 import PrepareSection from '@/components/prepare-section';
 import PollProcessResultSection from '@/components/poll-process-result-section';
 
-const PollCardGroup = () => {
+const PollAppCore = () => {
   const { toast } = useToast();
   const {
     isLoading,
@@ -97,4 +97,4 @@ const PollCardGroup = () => {
   );
 };
 
-export default PollCardGroup;
+export default PollAppCore;
