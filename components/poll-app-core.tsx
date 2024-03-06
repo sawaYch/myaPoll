@@ -7,6 +7,8 @@ import UrlInput from '@/components/url-input';
 import { usePollAppStore } from '@/stores/store';
 import PrepareSection from '@/components/prepare-section';
 import PollProcessResultSection from '@/components/poll-process-result-section';
+import { isMobile } from 'react-device-detect';
+import { cn } from '@/lib/utils';
 
 const PollAppCore = () => {
   const { toast } = useToast();
@@ -87,7 +89,12 @@ const PollAppCore = () => {
       />
       {isReady && (
         <>
-          <div className='flex flex-row space-x-2'>
+          <div
+            className={cn('flex flex-col', {
+              'flex-row space-x-2': !isMobile,
+              'space-y-2': isMobile,
+            })}
+          >
             <LiveStreamMetadataCard />
             <PrepareSection />
           </div>

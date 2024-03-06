@@ -72,7 +72,7 @@ const PrepareSection = () => {
             Allow audience to update his choice using latest comments
           </Label>
         </div>
-        <pre className='pl-6 text-sm text-muted-foreground'>
+        <pre className='whitespace-pre-wrap pl-6 text-sm text-muted-foreground'>
           {'For example:\n'}
           {'userA: 2\n'}
           {'userB: 1\n'}
