@@ -21,7 +21,7 @@ export async function GET() {
           tw='opacity-30 absolute'
           width='1024'
           height='570'
-          src={'https://myapoll.vercel.app/mya-bg.jpg'}
+          src={'https://myapoll.vercel.app/mya-bg.png'}
           alt='og-image'
         />
         <h2 tw='flex flex-col text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 text-left'>
