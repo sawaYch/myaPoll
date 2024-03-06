@@ -13,7 +13,7 @@ const DotPattern = ({ children }: PropsWithChildren) => (
 const CenterContainer = ({ children }: PropsWithChildren) => (
   <div
     id='bg-center-container'
-    className='pointer-events-none fixed flex h-dvh w-dvw select-none items-center justify-center break-all opacity-[0.05] mix-blend-screen transition-all'
+    className='pointer-events-none fixed flex h-dvh w-dvw select-none items-center justify-center break-all opacity-[0.05] transition-all'
   >
     {children}
   </div>
