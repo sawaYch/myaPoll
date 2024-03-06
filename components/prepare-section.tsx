@@ -87,6 +87,7 @@ const PrepareSection = () => {
             // simple validation
             if (numOfOptions <= 0) {
               toast({
+                variant: 'destructive',
                 title: '🚨 Oops...',
                 description: 'Require to fill in valid number of options',
               });

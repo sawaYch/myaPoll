@@ -41,6 +41,7 @@ const PollAppCore = () => {
     const vid = vidParser(urlInputValue);
     if (vid == null || vid.length === 0) {
       toast({
+        variant: 'destructive',
         title: '🚨 Oops...',
         description: 'Invalid youtube live url format',
       });
@@ -75,7 +76,7 @@ const PollAppCore = () => {
   ]);
 
   return (
-    <div className='flex w-dvw flex-col gap-2 p-20'>
+    <div className='flex w-[calc(100dvw-5rem)] flex-col gap-2 sm:w-dvw sm:p-20'>
       <UrlInput
         isLoading={isLoading}
         isReady={isReady}
