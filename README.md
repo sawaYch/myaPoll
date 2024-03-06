@@ -1,8 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MyaPoll
 
-## Getting Started
+![Vercel Deploy](https://vercel-badge-sawa.vercel.app/?app=myapoll&style=for-the-badge)
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 
-First, run the development server:
+## Introduction
+
+![Alt text](./docs/preview.png)
+
+A polling application designed specifically for YouTube livestream, enabling the collection of real-time audience comments as poll responses.
+
+## Usage
+
+1. Launch the web application and start a poll event within the YouTube livestream.
+2. Enter the passphrase for authentication purposes.
+3. Provide the URL of the live stream, such as <https://www.youtube.com/watch?v=92VgDXjI4Xg>
+4. Specify the number of options. By default, the application allows the audience to update their choices using the latest comments, but you also have the option to disable this feature.
+5. Click on the 'Start Poll' button to commence the collection of poll responses. A chart will update in realtime to represent to poll response data.
+6. Press the 'Stop' button to manually end the poll.
+7. The poll result summary will be displayed.
+8. Click on 'Next Poll' to initiate another new poll event.
+
+### Notices
+
+🗝️ Secret Code Protection: only designated individuals can use this application.  
+✨ This webapp consume Youtube Data API v3, which has daily quota limit (free).
+
+## Development
+
+### Setup env var
+
+create `.env.local` in project root directory, fill in your youtube API token and myaPoll app passphrase.
+
+```txt
+YT_DATA_API_TOKEN=
+YT_DATA_API_TOKEN_DEV=
+PASSPHRASE=
+PASSPHRASE_DEV=
+```
+
+### Start development server
 
 ```bash
 npm run dev
@@ -10,26 +46,15 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
 ## Deploy on Vercel
+
+```txt
+🚨 Remember to add env var above to Vercel.
+```
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
