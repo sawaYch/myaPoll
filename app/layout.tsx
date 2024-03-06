@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import StoreProvider from '@/stores/store-provider';
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -64,7 +65,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={cn('overflow-x-hidden', inter.className)}>
+      <body className={cn('overflow-x-hidden bg-[#282a36]', inter.className)}>
         <ThemeProvider
           attribute='class'
           defaultTheme='dark'
