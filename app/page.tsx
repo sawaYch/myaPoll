@@ -3,7 +3,7 @@ import PollApp from '@/components/poll-app';
 
 export default function Home() {
   return (
-    <main className='z-10 flex min-h-dvh flex-col items-center bg-[#282a36] p-4 text-gray-200'>
+    <main className='z-10 flex min-h-dvh w-screen flex-col items-center p-4 text-gray-200'>
       <AppCreditSection />
       <PollApp />
     </main>

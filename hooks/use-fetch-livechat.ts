@@ -43,7 +43,11 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
       const d = await fetchLiveChatMessage(chatId, nextToken);
       if (!d.success) {
         setIsLoading(false);
-        toast({ title: '🚨 Oops...', description: d.message });
+        toast({
+          variant: 'destructive',
+          title: '🚨 Oops...',
+          description: d.message,
+        });
         return;
       }
 

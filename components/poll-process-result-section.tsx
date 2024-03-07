@@ -9,6 +9,7 @@ import PollSummarySubCard from '@/components/poll-summary-subcard';
 import { useChartConfig } from '@/hooks/use-chart-config';
 import { updateChartResultParam } from '@/hooks/use-chart-config';
 import { useFetchLiveChat } from '@/hooks/use-fetch-livechat';
+import Placeholder from '@/components/placeholder';
 import { useCallback, useRef } from 'react';
 import {
   Chart as ChartJS,
@@ -105,6 +106,7 @@ const PollProcessResultSection = () => {
           </CardContent>
         </Card>
       )}
+      <Placeholder />
     </>
   );
 };
