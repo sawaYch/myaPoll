@@ -9,7 +9,7 @@ const LiveStreamMetadataCard = () => {
   return (
     <>
       <BrowserView>
-        <Card className='flex flex-col items-center justify-center'>
+        <Card className='flex h-full flex-col items-center justify-center'>
           <CardContent className='flex flex-col items-center justify-center gap-8 p-4'>
             <Image
               src={liveMetadata?.thumbnail ?? ''}

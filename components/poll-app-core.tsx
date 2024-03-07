@@ -90,9 +90,9 @@ const PollAppCore = () => {
       {isReady && (
         <>
           <div
-            className={cn('flex flex-col', {
-              'flex-row space-x-2': !isMobile,
-              'space-y-2': isMobile,
+            className={cn('flex', {
+              'space-x-2': !isMobile,
+              'flex-col space-y-2': isMobile,
             })}
           >
             <LiveStreamMetadataCard />
