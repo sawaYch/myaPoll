@@ -1,18 +1,29 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
 import Background from '@/components/background';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import StoreProvider from '@/stores/store-provider';
-import Head from 'next/head';
+import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#442328' },
+    { media: '(prefers-color-scheme: light)', color: '#442328' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  colorScheme: 'dark',
+};
+
 export const metadata: Metadata = {
-  title: 'Mya88🐼',
+  metadataBase: new URL('https://myapoll.vercel.app'),
+  title: 'MyaPoll🐼',
   description:
     'Youtube live stream polling app powered by Next & official data APIv3',
   applicationName: 'MyaPoll',
@@ -22,13 +33,6 @@ export const metadata: Metadata = {
   referrer: 'origin',
   creator: 'No.159 Sawa',
   publisher: 'Vercel',
-  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#da2777' }],
-  colorScheme: 'dark',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: 'index, follow',
   openGraph: {
     type: 'website',
@@ -36,7 +40,7 @@ export const metadata: Metadata = {
     title: 'MyaPoll🐼',
     description:
       'Youtube live stream polling app powered by Next & official data APIv3',
-    siteName: 'Mya88',
+    siteName: 'MyaPoll',
     images: [
       {
         url: 'https://myapoll.vercel.app/og',
@@ -65,7 +69,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={cn('overflow-x-hidden bg-[#282a36]', inter.className)}>
+      <body className={cn('overflow-x-hidden', inter.className)}>
         <ThemeProvider
           attribute='class'
           defaultTheme='dark'

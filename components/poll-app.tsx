@@ -1,10 +1,10 @@
 'use client';
-import { useCallback, useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { useCallback, useState } from 'react';
 
+import { usePollAppStore } from '@/stores/store';
 import { AuthForm } from './auth-form';
 import PollAppCore from './poll-app-core';
-import { usePollAppStore } from '@/stores/store';
 
 const PollApp = () => {
   const [isAuth, setIsAuth] = useState(false);

@@ -1,25 +1,28 @@
-import { usePollAppStore } from '@/stores/store';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { StopCircleIcon } from 'lucide-react';
-import { Bar } from 'react-chartjs-2';
-import Spinner from '@/components/spinner';
 import NewPollConfirmDialog from '@/components/new-poll-confirm-dialog';
-import PollSummarySubCard from '@/components/poll-summary-subcard';
-import { useChartConfig } from '@/hooks/use-chart-config';
-import { updateChartResultParam } from '@/hooks/use-chart-config';
-import { useFetchLiveChat } from '@/hooks/use-fetch-livechat';
 import Placeholder from '@/components/placeholder';
-import { useCallback, useRef } from 'react';
+import PollSummarySubCard from '@/components/poll-summary-subcard';
+import Spinner from '@/components/spinner';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
+  updateChartResultParam,
+  useChartConfig,
+} from '@/hooks/use-chart-config';
+import { useFetchLiveChat } from '@/hooks/use-fetch-livechat';
+import { usePollAppStore } from '@/stores/store';
+import {
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
+import { StopCircleIcon } from 'lucide-react';
+import { useCallback, useEffect, useRef } from 'react';
+import { Bar } from 'react-chartjs-2';
+import MotionContainer from './motion-container';
 
 ChartJS.register(
   CategoryScale,
@@ -59,10 +62,22 @@ const PollProcessResultSection = () => {
     newPollReset();
   }, [newPollReset]);
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [cardRef]);
+
   return (
-    <>
+    <MotionContainer
+      whileInView='onscreen'
+      layout='position'
+      viewport={{ once: false }}
+    >
       {pollAppState !== 'prepare' && (
-        <Card>
+        <Card ref={cardRef}>
           <CardHeader>
             {pollAppState === 'start' && (
               <CardTitle className='flex font-extrabold uppercase text-primary'>
@@ -107,7 +122,7 @@ const PollProcessResultSection = () => {
         </Card>
       )}
       <Placeholder />
-    </>
+    </MotionContainer>
   );
 };
 

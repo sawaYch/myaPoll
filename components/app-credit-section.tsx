@@ -4,7 +4,7 @@ import Image from 'next/image';
 const AppCreditSection = () => {
   const currentVersion = useProjectVersion();
   return (
-    <div className='mb-4 flex select-none self-end'>
+    <div className='z-10 mb-4 flex select-none self-end'>
       <div className='flex flex-col items-center justify-center'>
         <div className='text-[0.7rem]'>MyaPoll {currentVersion}</div>
         <div className='text-[0.6rem]'>Created by No.159</div>

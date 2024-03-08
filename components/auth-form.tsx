@@ -1,3 +1,6 @@
+import Spinner from '@/components/spinner';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -5,14 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { KeyRound } from 'lucide-react';
-import PassphraseInput from './passphrase-input';
-import { useCallback, useState } from 'react';
 import { cn } from '@/lib/utils';
-import Spinner from '@/components/spinner';
+import { motion } from 'framer-motion';
+import { KeyRound } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import PassphraseInput from './passphrase-input';
 
 interface AuthFormProps {
   onSubmit: (passphrase: string) => void;
@@ -50,25 +51,35 @@ export const AuthForm = ({ onSubmit }: AuthFormProps) => {
   }, [onSubmit, passphrase]);
 
   return (
-    <Card className='flex flex-col items-center justify-center'>
-      <CardHeader>
-        <CardTitle className='flex flex-col items-center gap-y-4'>
-          <Avatar className='h-16 w-16 ring-2 ring-pink-500 ring-offset-2 ring-offset-black'>
-            <AvatarImage src='./greeting.webp' />
-          </Avatar>
-          <Label className='uppercase'>㊙️SECRET CODE㊙️</Label>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <PassphraseInput
-          onChange={(event) => {
-            setPassphrase(event.target.value);
-          }}
-        />
-      </CardContent>
-      <CardFooter>
-        <SubmitButton onClick={submitPassphrase} isLoading={isLoading} />
-      </CardFooter>
-    </Card>
+    <motion.div
+      initial={{ rotate: 180, scale: 0 }}
+      animate={{ rotate: 0, scale: 1 }}
+      transition={{
+        type: 'spring',
+        stiffness: 260,
+        damping: 20,
+      }}
+    >
+      <Card className='flex flex-col items-center justify-center'>
+        <CardHeader>
+          <CardTitle className='flex flex-col items-center gap-y-4'>
+            <Avatar className='h-16 w-16 ring-2 ring-pink-500 ring-offset-2 ring-offset-black'>
+              <AvatarImage src='./greeting.webp' />
+            </Avatar>
+            <Label className='uppercase'>㊙️SECRET CODE㊙️</Label>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <PassphraseInput
+            onChange={(event) => {
+              setPassphrase(event.target.value);
+            }}
+          />
+        </CardContent>
+        <CardFooter>
+          <SubmitButton onClick={submitPassphrase} isLoading={isLoading} />
+        </CardFooter>
+      </Card>
+    </motion.div>
   );
 };

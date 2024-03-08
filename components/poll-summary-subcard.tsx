@@ -1,5 +1,5 @@
 import { CardTitle } from '@/components/ui/card';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 interface PollSummarySubCardProps {
   pollSummary: number[];
@@ -10,8 +10,16 @@ const PollSummarySubCard = ({ pollSummary }: PollSummarySubCardProps) => {
     return pollSummary.indexOf(Math.max(...pollSummary));
   }, [pollSummary]);
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [cardRef]);
+
   return (
-    <div className='mt-8'>
+    <div className='mt-8' id='summary-card' ref={cardRef}>
       <CardTitle className='font-extrabold uppercase text-primary'>
         📊 Poll Summary
       </CardTitle>

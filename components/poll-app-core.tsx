@@ -1,14 +1,15 @@
-import { useCallback, useState } from 'react';
-import { vidParser } from '@/lib/vid-parser';
-import { useLiveChat } from '@/hooks/use-livechat';
-import { useToast } from '@/components/ui/use-toast';
 import LiveStreamMetadataCard from '@/components/livestream-metadata-card';
-import UrlInput from '@/components/url-input';
-import { usePollAppStore } from '@/stores/store';
-import PrepareSection from '@/components/prepare-section';
 import PollProcessResultSection from '@/components/poll-process-result-section';
-import { isMobile } from 'react-device-detect';
+import PrepareSection from '@/components/prepare-section';
+import { useToast } from '@/components/ui/use-toast';
+import UrlInput from '@/components/url-input';
+import { useLiveChat } from '@/hooks/use-livechat';
 import { cn } from '@/lib/utils';
+import { vidParser } from '@/lib/vid-parser';
+import { usePollAppStore } from '@/stores/store';
+import { useCallback, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import MotionContainer from './motion-container';
 
 const PollAppCore = () => {
   const { toast } = useToast();
@@ -21,6 +22,7 @@ const PollAppCore = () => {
     setLiveMetaData,
     changePollAppState,
     currentPassphrase,
+    pollAppState,
   } = usePollAppStore();
 
   const [urlInputValue, setUrlInputValue] = useState('');
@@ -55,7 +57,11 @@ const PollAppCore = () => {
     const result = await fetchLiveStreamingDetails(vid);
     if (!result.success) {
       setIsLoading(false);
-      toast({ title: '🚨 Oops...', description: result.message });
+      toast({
+        variant: 'destructive',
+        title: '🚨 Oops...',
+        description: result.message,
+      });
       return;
     }
 
@@ -78,7 +84,7 @@ const PollAppCore = () => {
   ]);
 
   return (
-    <div className='flex w-[calc(100dvw-5rem)] flex-col gap-2 sm:w-dvw sm:p-20'>
+    <MotionContainer className='flex w-[calc(100dvw-5rem)] flex-col gap-2 sm:w-dvw sm:p-20'>
       <UrlInput
         isLoading={isLoading}
         isReady={isReady}
@@ -98,10 +104,10 @@ const PollAppCore = () => {
             <LiveStreamMetadataCard />
             <PrepareSection />
           </div>
-          <PollProcessResultSection />
+          {pollAppState !== 'prepare' && <PollProcessResultSection />}
         </>
       )}
-    </div>
+    </MotionContainer>
   );
 };
 

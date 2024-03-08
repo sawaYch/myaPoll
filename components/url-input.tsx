@@ -1,16 +1,15 @@
 'use client';
-import { forwardRef, useState } from 'react';
-import { BanIcon, EyeIcon, EyeOffIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { ChevronRightIcon } from 'lucide-react';
 import { Input, InputProps } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { BanIcon, ChevronRightIcon } from 'lucide-react';
+import { forwardRef } from 'react';
 import Spinner from './spinner';
 
 interface UrlInputProps extends InputProps {

@@ -19,18 +19,26 @@ const CenterContainer = ({ children }: PropsWithChildren) => (
   </div>
 );
 
+const BackgroundGradient = ({ children }: PropsWithChildren) => (
+  <div className='fixed h-screen w-screen bg-[#282a36]	bg-gradient-to-br from-[#282a36] to-[#442328]'>
+    {children}
+  </div>
+);
+
 const Background = () => (
-  <CenterContainer>
-    <DotPattern>
-      <Image
-        className='pointer-events-none z-[1] select-none rounded-xl object-cover grayscale'
-        src='/mya-bg.png'
-        alt='bg image'
-        fill
-        priority
-      />
-    </DotPattern>
-  </CenterContainer>
+  <BackgroundGradient>
+    <CenterContainer>
+      <DotPattern>
+        <Image
+          className='pointer-events-none z-[1] select-none rounded-xl object-cover grayscale'
+          src='/mya-bg.png'
+          alt='bg image'
+          fill
+          priority
+        />
+      </DotPattern>
+    </CenterContainer>
+  </BackgroundGradient>
 );
 
 export default Background;
