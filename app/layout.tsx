@@ -59,14 +59,14 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     startupImage: [
       {
-        url: '/splash_screens/iPhone_14_Pro_Max_landscape.png',
+        url: '/splash_screens/iPhone_15_Pro_Max__iPhone_15_Plus__iPhone_14_Pro_Max_landscape.png',
         media:
           'screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)',
       },
       {
+        url: '/splash_screens/iPhone_15_Pro__iPhone_15__iPhone_14_Pro_landscape.png',
         media:
           'screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)',
-        url: '/splash_screens/iPhone_14_Pro_landscape.png',
       },
       {
         media:
