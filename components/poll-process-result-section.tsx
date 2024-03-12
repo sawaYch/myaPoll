@@ -1,6 +1,4 @@
 import NewPollConfirmDialog from '@/components/new-poll-confirm-dialog';
-import Placeholder from '@/components/placeholder';
-import PollSummarySubCard from '@/components/poll-summary-subcard';
 import Spinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +7,7 @@ import {
   useChartConfig,
 } from '@/hooks/use-chart-config';
 import { useFetchLiveChat } from '@/hooks/use-fetch-livechat';
+import { cn } from '@/lib/utils';
 import { usePollAppStore } from '@/stores/store';
 import {
   BarElement,
@@ -22,7 +21,9 @@ import {
 import { StopCircleIcon } from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { BrowserView, MobileView, isMobile } from 'react-device-detect';
 import MotionContainer from './motion-container';
+import PollSummarySubCard from './poll-summary-subcard';
 
 ChartJS.register(
   CategoryScale,
@@ -34,17 +35,26 @@ ChartJS.register(
 );
 
 const PollProcessResultSection = () => {
-  const { pollAppState, pollResultSummary, changePollAppState, newPollReset } =
-    usePollAppStore();
+  const {
+    pollAppState,
+    changePollAppState,
+    newPollReset,
+    pollResultSummary,
+    setPollResultSummary,
+  } = usePollAppStore();
   const { chartOptions, chartInitData, sortChartResult } = useChartConfig();
   const barChartRef = useRef<ChartJS<'bar', number[], string>>(null);
 
-  const updateChartInPolling = useCallback((data: number[]) => {
-    if (barChartRef.current) {
-      barChartRef.current.data.datasets[0].data = data;
-      barChartRef.current.update();
-    }
-  }, []);
+  const updateChartInPolling = useCallback(
+    (data: number[]) => {
+      if (barChartRef.current) {
+        barChartRef.current.data.datasets[0].data = data;
+        barChartRef.current.update();
+        setPollResultSummary(data);
+      }
+    },
+    [setPollResultSummary]
+  );
 
   const updateChartPollResult = useCallback((param: updateChartResultParam) => {
     if (barChartRef.current) {
@@ -75,53 +85,71 @@ const PollProcessResultSection = () => {
       whileInView='onscreen'
       layout='position'
       viewport={{ once: false }}
+      className={cn('w-full', {
+        grayscale: pollAppState === 'prepare',
+        'h-[calc(100dvh-10rem)]': !isMobile,
+        'h-full': isMobile,
+      })}
     >
-      {pollAppState !== 'prepare' && (
-        <Card ref={cardRef}>
-          <CardHeader>
-            {pollAppState === 'start' && (
-              <CardTitle className='flex font-extrabold uppercase text-primary'>
-                2️⃣ Retrieving response <Spinner className='ml-2' />
-              </CardTitle>
-            )}
-            {pollAppState === 'stop' && (
-              <CardTitle className='font-extrabold uppercase text-primary'>
-                3️⃣ Result
-              </CardTitle>
-            )}
-          </CardHeader>
-          <CardContent className='flex flex-col gap-2'>
-            <Bar
-              ref={barChartRef}
-              options={chartOptions}
-              data={chartInitData}
-              redraw
-            />
-            {pollAppState === 'stop' && (
+      <Card ref={cardRef} className='h-full w-full'>
+        <CardHeader>
+          {pollAppState === 'stop' ? (
+            <CardTitle className='font-extrabold uppercase text-primary'>
+              3️⃣ Result
+            </CardTitle>
+          ) : (
+            <CardTitle className='flex font-extrabold uppercase text-primary'>
+              2️⃣ Retrieving response
+              {pollAppState === 'start' && <Spinner className='ml-2' />}
+            </CardTitle>
+          )}
+        </CardHeader>
+        <CardContent className='flex flex-col gap-2'>
+          <BrowserView>
+            <div className='flex gap-8'>
               <PollSummarySubCard pollSummary={pollResultSummary} />
-            )}
-            {pollAppState === 'start' && (
-              <Button
-                className='mt-8 flex w-32 self-end'
-                onClick={() => {
-                  changePollAppState('stop');
-                  // sort result
-                  sortChartResult(updateChartPollResult);
-                }}
-              >
-                Stop
-                <StopCircleIcon className='ml-1 w-8' />
-              </Button>
-            )}
-            {pollAppState === 'stop' && (
-              <NewPollConfirmDialog
-                handleProceedNewPoll={handleProceedNewPoll}
+              <div className={cn('w-full h-full mt-4')}>
+                <Bar
+                  ref={barChartRef}
+                  options={chartOptions}
+                  data={chartInitData}
+                  height='100%'
+                  redraw
+                />
+              </div>
+            </div>
+          </BrowserView>
+          <MobileView>
+            {/* <div className={cn('w-full h-full')}>
+              <Bar
+                ref={barChartRef}
+                options={chartOptions}
+                data={chartInitData}
+                height='300px'
+                redraw
               />
-            )}
-          </CardContent>
-        </Card>
-      )}
-      <Placeholder />
+            </div> FIXME: responsive here sucks!!!*/}
+            <div className='flex items-center justify-center -ml-2'>
+              <PollSummarySubCard pollSummary={pollResultSummary} />
+            </div>
+          </MobileView>
+          {pollAppState === 'stop' ? (
+            <NewPollConfirmDialog handleProceedNewPoll={handleProceedNewPoll} />
+          ) : (
+            <Button
+              disabled={pollAppState !== 'start'}
+              className='mt-8 flex w-32 self-end'
+              onClick={() => {
+                changePollAppState('stop');
+                sortChartResult(updateChartPollResult);
+              }}
+            >
+              Stop
+              <StopCircleIcon className='ml-1 w-8' />
+            </Button>
+          )}
+        </CardContent>
+      </Card>
     </MotionContainer>
   );
 };

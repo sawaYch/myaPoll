@@ -22,6 +22,7 @@ export interface PollAppInterface {
   pollStartDateTime: dayjs.Dayjs;
   pollResultSummary: number[];
   currentPassphrase: string;
+  newPollWarningChecked: boolean;
 }
 
 export interface PollAppActionsInterface {
@@ -37,6 +38,7 @@ export interface PollAppActionsInterface {
   setPollResultSummary: (resultSummary: number[]) => void;
   newPollReset: () => void;
   setCurrentPassphrase: (currentPassphrase: string) => void;
+  setNewPollWarningChecked: (checked: boolean) => void;
 }
 
 export type PollAppFullInterface = PollAppInterface & PollAppActionsInterface;

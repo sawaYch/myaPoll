@@ -26,16 +26,17 @@ export const useChartConfig = () => {
           display: false,
         },
         title: {
-          display: false,
+          display: true,
+          text: 'Realtime poll response graph',
         },
       },
       scales: {
         y: {
-          title: {
-            display: true,
-            text: 'Option🎫',
-            color: '#dddddd',
-          },
+          // title: {
+          //   display: true,
+          //   text: 'Option',
+          //   color: '#dddddd',
+          // },
           ticks: {
             color: '#dddddd',
           },
@@ -45,11 +46,11 @@ export const useChartConfig = () => {
           },
         },
         x: {
-          title: {
-            display: true,
-            color: '#dddddd',
-            text: 'Count',
-          },
+          // title: {
+          //   display: true,
+          //   color: '#dddddd',
+          //   text: 'Count',
+          // },
           ticks: {
             color: '#dddddd',
             stepSize: 1,

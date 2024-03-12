@@ -2,6 +2,7 @@
 import { useToast } from '@/components/ui/use-toast';
 import { useCallback, useState } from 'react';
 
+import { cn } from '@/lib/utils';
 import { usePollAppStore } from '@/stores/store';
 import { AuthForm } from './auth-form';
 import PollAppCore from './poll-app-core';
@@ -28,8 +29,16 @@ const PollApp = () => {
     [setCurrentPassphrase, toast]
   );
 
+  const { isReady } = usePollAppStore();
+
   return (
-    <div className='z-40 flex min-h-[calc(100dvh-10rem)] flex-col items-center justify-center'>
+    <div
+      className={cn(
+        'z-40 flex min-h-[calc(100dvh-10rem)] flex-col',
+        { 'justify-start items-start': isReady },
+        { 'items-center justify-center': !isReady }
+      )}
+    >
       {!isAuth ? <AuthForm onSubmit={handleAuth} /> : <PollAppCore />}
     </div>
   );

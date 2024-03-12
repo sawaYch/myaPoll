@@ -22,7 +22,6 @@ const PollAppCore = () => {
     setLiveMetaData,
     changePollAppState,
     currentPassphrase,
-    pollAppState,
   } = usePollAppStore();
 
   const [urlInputValue, setUrlInputValue] = useState('');
@@ -84,7 +83,7 @@ const PollAppCore = () => {
   ]);
 
   return (
-    <MotionContainer className='flex w-[calc(100dvw-5rem)] flex-col gap-2 sm:w-dvw sm:p-20'>
+    <MotionContainer className='flex w-[calc(100dvw-5rem)] flex-col gap-2 sm:w-dvw sm:px-20'>
       <UrlInput
         isLoading={isLoading}
         isReady={isReady}
@@ -94,18 +93,22 @@ const PollAppCore = () => {
         }}
       />
       {isReady && (
-        <>
+        <div
+          className={cn('flex flex-row gap-2', {
+            'flex-col': isMobile,
+          })}
+        >
           <div
-            className={cn('flex', {
-              'space-x-2': !isMobile,
+            className={cn('flex flex-col', {
+              'space-y-2 max-w-96': !isMobile,
               'flex-col space-y-2': isMobile,
             })}
           >
             <LiveStreamMetadataCard />
             <PrepareSection />
           </div>
-          {pollAppState !== 'prepare' && <PollProcessResultSection />}
-        </>
+          <PollProcessResultSection />
+        </div>
       )}
     </MotionContainer>
   );

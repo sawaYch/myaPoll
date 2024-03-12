@@ -10,6 +10,15 @@ import { createContext, useContext } from 'react';
 import { createStore, useStore as useZustandStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
+const getNewPollWarningCheckedFromLocalStorage: () => boolean = () => {
+  if (typeof window == 'undefined') {
+    return false;
+  }
+  return localStorage.getItem('not-show-new-poll-warning') === 'true'
+    ? true
+    : false;
+};
+
 const getDefaultInitialState: () => PollAppInterface = () => ({
   isLoading: false,
   isReady: false,
@@ -22,6 +31,7 @@ const getDefaultInitialState: () => PollAppInterface = () => ({
   pollStartDateTime: dayjs(),
   pollResultSummary: [] as number[],
   currentPassphrase: '',
+  newPollWarningChecked: getNewPollWarningCheckedFromLocalStorage(),
 });
 
 const storeContext = createContext<ReturnType<typeof initStore> | null>(null);
@@ -47,6 +57,7 @@ export const usePollAppStore = () => {
       pollStartDateTime: store.pollStartDateTime,
       pollResultSummary: store.pollResultSummary,
       currentPassphrase: store.currentPassphrase,
+      newPollWarningChecked: store.newPollWarningChecked,
       setIsLoading: store.setIsLoading,
       setIsReady: store.setIsReady,
       setLiveChatId: store.setLiveChatId,
@@ -59,6 +70,7 @@ export const usePollAppStore = () => {
       setPollResultSummary: store.setPollResultSummary,
       setCurrentPassphrase: store.setCurrentPassphrase,
       newPollReset: store.newPollReset,
+      setNewPollWarningChecked: store.setNewPollWarningChecked,
     }))
   );
 };
@@ -135,6 +147,11 @@ export const initStore = () => {
         pollData,
         pollStartDateTime,
         pollResultSummary,
+      });
+    },
+    setNewPollWarningChecked: (checked) => {
+      set({
+        newPollWarningChecked: checked,
       });
     },
   }));

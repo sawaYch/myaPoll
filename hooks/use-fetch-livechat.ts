@@ -22,6 +22,7 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
     isReady,
     pollAppState,
     currentPassphrase,
+    setPollResultSummary,
   } = usePollAppStore();
 
   const { fetchLiveChatMessage, extractMessage } =
@@ -41,6 +42,14 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
         return;
       }
       const d = await fetchLiveChatMessage(chatId, nextToken);
+      // DEBUG dummy data
+      // const d = {
+      //   success: true,
+      //   message: 'hello world',
+      //   pollingIntervalMillis: 500,
+      //   nextPageToken: 'bla',
+      //   items: [],
+      // };
       if (!d.success) {
         setIsLoading(false);
         toast({
@@ -100,7 +109,7 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
       });
 
       updateChart(data);
-
+      setPollResultSummary(data);
       setPollData(existedPollData);
 
       setTimeout(async () => {
@@ -116,6 +125,7 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
       pollStartDateTime,
       setIsLoading,
       setPollData,
+      setPollResultSummary,
       toast,
       updateChart,
     ]

@@ -4,10 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+
 import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 import { usePollAppStore } from '@/stores/store';
 import dayjs from 'dayjs';
-import { PlayIcon } from 'lucide-react';
+import { HelpCircleIcon, PlayIcon } from 'lucide-react';
 import { useRef } from 'react';
 
 const PrepareSection = () => {
@@ -20,12 +27,13 @@ const PrepareSection = () => {
     setPollStartDateTime,
     allowUpdatePollChoice,
     setAllowUpdatePollChoice,
+    setPollResultSummary,
   } = usePollAppStore();
   const { toast } = useToast();
 
   return (
-    <MotionContainer className='w-full'>
-      <Card>
+    <MotionContainer className={cn({ grayscale: pollAppState != 'prepare' })}>
+      <Card className=''>
         <CardHeader>
           <CardTitle className='font-extrabold uppercase text-primary'>
             1️⃣ Prepare
@@ -73,17 +81,24 @@ const PrepareSection = () => {
             <Label htmlFor='checkbox-allow-change-options'>
               Allow audience to update his choice using latest comments
             </Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <HelpCircleIcon className='cursor-pointer' />
+              </PopoverTrigger>
+              <PopoverContent>
+                <pre className='whitespace-pre-wrap text-xs'>
+                  {'For example:\n'}
+                  {'userA: 2\n'}
+                  {'userB: 1\n'}
+                  {'userA: 3\n'}
+                  {'...\n'}
+                  {'userA is updated his choice from "2" to "3".\n'}
+                </pre>
+              </PopoverContent>
+            </Popover>
           </div>
-          <pre className='whitespace-pre-wrap pl-6 text-sm text-muted-foreground'>
-            {'For example:\n'}
-            {'userA: 2\n'}
-            {'userB: 1\n'}
-            {'userA: 3\n'}
-            {'...\n'}
-            {'userA is updated his choice from "2" to "3".\n'}
-          </pre>
           <Button
-            className='mt-8 flex w-32 self-end'
+            className='flex w-32 self-end mt-[1.7rem]'
             disabled={pollAppState !== 'prepare'}
             onClick={() => {
               // simple validation
@@ -96,6 +111,7 @@ const PrepareSection = () => {
                 return;
               }
               changePollAppState('start');
+              setPollResultSummary(new Array(numOfOptions).fill(0));
               setPollStartDateTime(dayjs());
             }}
           >
