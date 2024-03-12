@@ -130,7 +130,7 @@ const PollProcessResultSection = () => {
               />
             </div> FIXME: responsive here sucks!!!*/}
             <div className='flex items-center justify-center -ml-2'>
-              <PollSummarySubCard pollSummary={pollResultSummary} />
+              <PollSummarySubCard />
             </div>
           </MobileView>
           {pollAppState === 'stop' ? (
