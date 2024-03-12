@@ -12,15 +12,11 @@ import { usePollAppStore } from '@/stores/store';
 import { useEffect, useMemo, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 
-interface PollSummarySubCardProps {
-  pollSummary: number[];
-}
-
-const PollSummarySubCard = ({ pollSummary }: PollSummarySubCardProps) => {
-  const { pollAppState } = usePollAppStore();
+const PollSummarySubCard = () => {
+  const { pollAppState, numOfOptions, pollResultSummary } = usePollAppStore();
   const pollSummaryTop = useMemo(() => {
-    return pollSummary.indexOf(Math.max(...pollSummary));
-  }, [pollSummary]);
+    return pollResultSummary.indexOf(Math.max(...pollResultSummary));
+  }, [pollResultSummary]);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -50,21 +46,41 @@ const PollSummarySubCard = ({ pollSummary }: PollSummarySubCardProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {pollSummary.map((value, index) => {
-              return (
-                <TableRow key={index + 1}>
-                  <TableCell className='p-0 m-0 text-center'>
-                    {pollSummaryTop === index && pollAppState === 'stop'
-                      ? '👑'
-                      : ' '}
-                  </TableCell>
-                  <TableCell className='p-0 text-center'>{index + 1}</TableCell>
-                  <TableCell className='p-0  text-center'>
-                    {value ?? 0}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {pollResultSummary.length === 0
+              ? new Array(numOfOptions).fill(0).map((value, index) => {
+                  return (
+                    <TableRow key={index + 1}>
+                      <TableCell className='p-0 m-0 text-center'>
+                        {pollSummaryTop === index && pollAppState === 'stop'
+                          ? '👑'
+                          : ' '}
+                      </TableCell>
+                      <TableCell className='p-0 text-center'>
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className='p-0  text-center'>
+                        {value ?? 0}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              : pollResultSummary.map((value, index) => {
+                  return (
+                    <TableRow key={index + 1}>
+                      <TableCell className='p-0 m-0 text-center'>
+                        {pollSummaryTop === index && pollAppState === 'stop'
+                          ? '👑'
+                          : ' '}
+                      </TableCell>
+                      <TableCell className='p-0 text-center'>
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className='p-0  text-center'>
+                        {value ?? 0}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
           </TableBody>
         </Table>
       </ScrollArea>

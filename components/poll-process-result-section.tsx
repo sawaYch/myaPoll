@@ -107,7 +107,7 @@ const PollProcessResultSection = () => {
         <CardContent className='flex flex-col gap-2'>
           <BrowserView>
             <div className='flex gap-8'>
-              <PollSummarySubCard pollSummary={pollResultSummary} />
+              <PollSummarySubCard />
               <div className={cn('w-full h-full mt-4')}>
                 <Bar
                   ref={barChartRef}
