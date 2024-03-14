@@ -33,7 +33,7 @@ const PrepareSection = () => {
 
   return (
     <MotionContainer className={cn({ grayscale: pollAppState != 'prepare' })}>
-      <Card className=''>
+      <Card id='prepare-section-card'>
         <CardHeader>
           <CardTitle className='font-extrabold uppercase text-primary'>
             1️⃣ Prepare
@@ -113,6 +113,15 @@ const PrepareSection = () => {
               changePollAppState('start');
               setPollResultSummary(new Array(numOfOptions).fill(0));
               setPollStartDateTime(dayjs());
+              const divElement = document.getElementById(
+                'process-section-card'
+              );
+              if (divElement) {
+                divElement.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                });
+              }
             }}
           >
             Start Poll
