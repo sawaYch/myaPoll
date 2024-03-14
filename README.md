@@ -15,10 +15,9 @@ A polling application designed specifically for YouTube livestream, enabling the
 2. Enter the passphrase for authentication purposes.
 3. Provide the URL of the live stream, such as <https://www.youtube.com/watch?v=92VgDXjI4Xg>
 4. Specify the number of options. By default, the application allows the audience to update their choices using the latest comments, but you also have the option to disable this feature.
-5. Click on the 'Start Poll' button to commence the collection of poll responses. A chart will update in realtime to represent to poll response data.
-6. Press the 'Stop' button to manually end the poll.
-7. The poll result summary will be displayed.
-8. Click on 'Next Poll' to initiate another new poll event.
+5. Click on the 'Start Poll' button to commence the collection of poll responses. A chart and summary will update in realtime to represent to poll response data.
+6. Press the 'Stop' button to manually end the poll. Then you can view the poll result.
+7. Click on 'Next Poll' to initiate another new poll event.
 
 ### Notices
 
