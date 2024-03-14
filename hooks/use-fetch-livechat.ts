@@ -6,11 +6,7 @@ import dayjs from 'dayjs';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLiveChat } from './use-livechat';
 
-interface useFetchLiveChatProps {
-  updateChart: (data: number[]) => void;
-}
-
-export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
+export const useFetchLiveChat = () => {
   const {
     setIsLoading,
     pollData,
@@ -108,8 +104,9 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
         }
       });
 
-      updateChart(data);
+      // update poll result summary (choice & count)
       setPollResultSummary(data);
+      // update poll Data based on last existing poll data record (existedPollData[uid] = choice)
       setPollData(existedPollData);
 
       setTimeout(async () => {
@@ -127,7 +124,6 @@ export const useFetchLiveChat = ({ updateChart }: useFetchLiveChatProps) => {
       setPollData,
       setPollResultSummary,
       toast,
-      updateChart,
     ]
   );
 
